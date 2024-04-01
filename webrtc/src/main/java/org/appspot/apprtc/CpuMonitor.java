@@ -18,6 +18,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -461,7 +462,7 @@ public class CpuMonitor {
     try (FileInputStream stream = new FileInputStream(fileName);
          InputStreamReader streamReader = new InputStreamReader(stream, Charset.forName("UTF-8"));
          BufferedReader reader = new BufferedReader(streamReader)) {
-      String line = reader.readLine();
+      String line = BoundedLineReader.readLine(reader, 5_000_000);
       number = parseLong(line);
     } catch (FileNotFoundException e) {
       // CPU core is off, so file with its scaling frequency .../cpufreq/scaling_cur_freq
@@ -498,7 +499,7 @@ public class CpuMonitor {
       // line should contain something like this:
       // cpu  5093818 271838 3512830 165934119 101374 447076 272086 0 0 0
       //       user    nice  system     idle   iowait  irq   softirq
-      String line = reader.readLine();
+      String line = BoundedLineReader.readLine(reader, 5_000_000);
       String[] lines = line.split("\\s+");
       int length = lines.length;
       if (length >= 5) {
