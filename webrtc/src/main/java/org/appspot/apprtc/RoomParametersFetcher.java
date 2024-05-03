@@ -88,7 +88,7 @@ public class RoomParametersFetcher {
       JSONObject roomJson = new JSONObject(response);
 
       String result = roomJson.getString("result");
-      if (!result.equals("SUCCESS")) {
+      if (!"SUCCESS".equals(result)) {
         events.onSignalingParametersError("Room response error: " + result);
         return;
       }
@@ -108,10 +108,10 @@ public class RoomParametersFetcher {
           JSONObject message = new JSONObject(messageString);
           String messageType = message.getString("type");
           Log.d(TAG, "GAE->C #" + i + " : " + messageString);
-          if (messageType.equals("offer")) {
+          if ("offer".equals(messageType)) {
             offerSdp = new SessionDescription(
                 SessionDescription.Type.fromCanonicalForm(messageType), message.getString("sdp"));
-          } else if (messageType.equals("candidate")) {
+          } else if ("candidate".equals(messageType)) {
             IceCandidate candidate = new IceCandidate(
                 message.getString("id"), message.getInt("label"), message.getString("candidate"));
             iceCandidates.add(candidate);

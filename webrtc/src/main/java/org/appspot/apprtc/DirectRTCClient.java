@@ -252,20 +252,20 @@ public class DirectRTCClient implements AppRTCClient, TCPChannelClient.TCPChanne
     try {
       JSONObject json = new JSONObject(msg);
       String type = json.optString("type");
-      if (type.equals("candidate")) {
+      if ("candidate".equals(type)) {
         events.onRemoteIceCandidate(toJavaCandidate(json));
-      } else if (type.equals("remove-candidates")) {
+      } else if ("remove-candidates".equals(type)) {
         JSONArray candidateArray = json.getJSONArray("candidates");
         IceCandidate[] candidates = new IceCandidate[candidateArray.length()];
         for (int i = 0; i < candidateArray.length(); ++i) {
           candidates[i] = toJavaCandidate(candidateArray.getJSONObject(i));
         }
         events.onRemoteIceCandidatesRemoved(candidates);
-      } else if (type.equals("answer")) {
+      } else if ("answer".equals(type)) {
         SessionDescription sdp = new SessionDescription(
             SessionDescription.Type.fromCanonicalForm(type), json.getString("sdp"));
         events.onRemoteDescription(sdp);
-      } else if (type.equals("offer")) {
+      } else if ("offer".equals(type)) {
         SessionDescription sdp = new SessionDescription(
             SessionDescription.Type.fromCanonicalForm(type), json.getString("sdp"));
 

@@ -115,7 +115,7 @@ public class AppRTCAudioManager {
    * e.g. from "NEAR to FAR" or from "FAR to NEAR".
    */
   private void onProximitySensorChangedState() {
-    if (!useSpeakerphone.equals(SPEAKERPHONE_AUTO)) {
+    if (!SPEAKERPHONE_AUTO.equals(useSpeakerphone)) {
       return;
     }
 
@@ -175,7 +175,7 @@ public class AppRTCAudioManager {
     useSpeakerphone = sharedPreferences.getString(context.getString(R.string.pref_speakerphone_key),
         context.getString(R.string.pref_speakerphone_default));
     Log.d(TAG, "useSpeakerphone: " + useSpeakerphone);
-    if (useSpeakerphone.equals(SPEAKERPHONE_FALSE)) {
+    if (SPEAKERPHONE_FALSE.equals(useSpeakerphone)) {
       defaultAudioDevice = AudioDevice.EARPIECE;
     } else {
       defaultAudioDevice = AudioDevice.SPEAKER_PHONE;

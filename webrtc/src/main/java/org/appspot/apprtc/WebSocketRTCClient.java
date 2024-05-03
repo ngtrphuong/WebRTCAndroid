@@ -303,16 +303,16 @@ public class WebSocketRTCClient implements AppRTCClient, WebSocketChannelEvents 
       if (msgText.length() > 0) {
         json = new JSONObject(msgText);
         String type = json.optString("type");
-        if (type.equals("candidate")) {
+        if ("candidate".equals(type)) {
           events.onRemoteIceCandidate(toJavaCandidate(json));
-        } else if (type.equals("remove-candidates")) {
+        } else if ("remove-candidates".equals(type)) {
           JSONArray candidateArray = json.getJSONArray("candidates");
           IceCandidate[] candidates = new IceCandidate[candidateArray.length()];
           for (int i = 0; i < candidateArray.length(); ++i) {
             candidates[i] = toJavaCandidate(candidateArray.getJSONObject(i));
           }
           events.onRemoteIceCandidatesRemoved(candidates);
-        } else if (type.equals("answer")) {
+        } else if ("answer".equals(type)) {
           if (initiator) {
             SessionDescription sdp = new SessionDescription(
                 SessionDescription.Type.fromCanonicalForm(type), json.getString("sdp"));
@@ -320,7 +320,7 @@ public class WebSocketRTCClient implements AppRTCClient, WebSocketChannelEvents 
           } else {
             reportError("Received answer for call initiator: " + msg);
           }
-        } else if (type.equals("offer")) {
+        } else if ("offer".equals(type)) {
           if (!initiator) {
             SessionDescription sdp = new SessionDescription(
                 SessionDescription.Type.fromCanonicalForm(type), json.getString("sdp"));
@@ -328,7 +328,7 @@ public class WebSocketRTCClient implements AppRTCClient, WebSocketChannelEvents 
           } else {
             reportError("Received offer for call receiver: " + msg);
           }
-        } else if (type.equals("bye")) {
+        } else if ("bye".equals(type)) {
           events.onChannelClose();
         } else {
           reportError("Unexpected WebSocket message: " + msg);
@@ -400,7 +400,7 @@ public class WebSocketRTCClient implements AppRTCClient, WebSocketChannelEvents 
               try {
                 JSONObject roomJson = new JSONObject(response);
                 String result = roomJson.getString("result");
-                if (!result.equals("SUCCESS")) {
+                if (!"SUCCESS".equals(result)) {
                   reportError("GAE POST error: " + result);
                 }
               } catch (JSONException e) {
