@@ -39,6 +39,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.security.SecureRandom;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -283,7 +284,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     // roomId is random for loopback.
     if (loopback) {
-      roomId = Integer.toString((new Random()).nextInt(100000000));
+      roomId = Integer.toString((new SecureRandom()).nextInt(100000000));
     }
 
     String roomUrl = sharedPref.getString(
