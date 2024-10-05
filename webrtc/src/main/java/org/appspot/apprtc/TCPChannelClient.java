@@ -10,6 +10,7 @@
 
 package org.appspot.apprtc;
 
+import io.github.pixee.security.BoundedLineReader;
 import javax.annotation.Nullable;
 import android.util.Log;
 import java.io.BufferedReader;
@@ -192,7 +193,7 @@ public class TCPChannelClient {
       while (true) {
         final String message;
         try {
-          message = in.readLine();
+          message = BoundedLineReader.readLine(in, 5_000_000);
         } catch (IOException e) {
           synchronized (rawSocketLock) {
             // If socket was closed, this is expected.
