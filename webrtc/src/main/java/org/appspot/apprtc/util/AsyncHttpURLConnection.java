@@ -10,6 +10,8 @@
 
 package org.appspot.apprtc.util;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -55,7 +57,7 @@ public class AsyncHttpURLConnection {
 
   private void sendHttpMessage() {
     try {
-      HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+      HttpURLConnection connection = (HttpURLConnection) Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openConnection();
       byte[] postData = new byte[0];
       if (message != null) {
         postData = message.getBytes("UTF-8");
